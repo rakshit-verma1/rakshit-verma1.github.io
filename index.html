@@ -1,0 +1,559 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Rakshit Verma — AI & Deep Learning</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,700;0,9..144,900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: #06090f; color: #94a3b8; font-family: 'IBM Plex Sans', sans-serif; }
+    ::selection { background: #38bdf820; color: #38bdf8; }
+    ::-webkit-scrollbar { width: 3px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: #38bdf828; border-radius: 2px; }
+
+    /* NAV */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 0 clamp(1.5rem, 5vw, 3.5rem); height: 58px;
+      background: transparent;
+      border-bottom: 1px solid transparent;
+      transition: all 0.3s ease;
+    }
+    nav.scrolled {
+      background: rgba(6, 9, 15, 0.92);
+      backdrop-filter: blur(20px);
+      border-bottom-color: #38bdf810;
+    }
+    .nav-logo { font-family: 'IBM Plex Mono', monospace; font-size: 0.88rem; font-weight: 500; color: #f8fafc; letter-spacing: 0.05em; }
+    .nav-links { display: flex; gap: clamp(1rem, 3vw, 2.2rem); }
+    .nav-links a {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; letter-spacing: 0.12em;
+      text-transform: uppercase; color: #475569; text-decoration: none;
+      position: relative; transition: color 0.15s ease;
+    }
+    .nav-links a::after { content: ''; position: absolute; bottom: -3px; left: 0; width: 0; height: 1px; background: #38bdf8; transition: width 0.2s ease; }
+    .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+    .nav-links a:hover, .nav-links a.active { color: #f8fafc; }
+
+    /* LAYOUT */
+    .container { max-width: 860px; margin: 0 auto; padding: 0 clamp(1.5rem, 5vw, 2.5rem); }
+
+    /* HERO */
+    #about { min-height: 100vh; display: flex; flex-direction: column; justify-content: center; padding-top: 100px; padding-bottom: 80px; }
+    .hero-tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem; color: #38bdf8; letter-spacing: 0.2em; text-transform: uppercase; margin-bottom: 1.4rem; opacity: 0; animation: rise 0.6s ease 0.05s forwards; }
+    .hero-name { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(3.2rem, 9vw, 6rem); color: #f8fafc; line-height: 0.92; letter-spacing: -0.03em; margin-bottom: 2rem; opacity: 0; animation: rise 0.6s ease 0.15s forwards; }
+    .hero-bio { font-size: 0.97rem; line-height: 1.9; color: #64748b; max-width: 500px; margin-bottom: 2.8rem; font-weight: 300; opacity: 0; animation: rise 0.6s ease 0.25s forwards; }
+    .hero-bio strong { color: #94a3b8; font-weight: 500; }
+    .hero-bio code { font-family: 'IBM Plex Mono', monospace; color: #38bdf8; }
+    .hero-btns { display: flex; gap: 0.75rem; flex-wrap: wrap; opacity: 0; animation: rise 0.6s ease 0.35s forwards; }
+    .btn-primary {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem; font-weight: 500;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.72rem 1.6rem; text-decoration: none;
+      background: #38bdf8; color: #06090f; transition: opacity 0.15s ease; display: inline-block;
+    }
+    .btn-primary:hover { opacity: 0.85; }
+    .btn-secondary {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.72rem 1.4rem; text-decoration: none;
+      color: #475569; border: 1px solid #1e293b; display: inline-block;
+      transition: color 0.15s ease, border-color 0.15s ease;
+    }
+    .btn-secondary:hover { color: #38bdf8; border-color: #38bdf870; }
+
+    /* DIVIDER */
+    .divider { height: 1px; background: linear-gradient(to right, #38bdf818, transparent); margin: 0 0 5rem 0; }
+
+    /* SECTION HEADING */
+    .section { padding-bottom: 5rem; }
+    .section-tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.68rem; color: #38bdf8; letter-spacing: 0.18em; text-transform: uppercase; margin-bottom: 0.45rem; }
+    .section-title { font-family: 'Fraunces', serif; font-weight: 900; font-size: clamp(1.4rem, 3vw, 1.75rem); color: #f8fafc; letter-spacing: -0.02em; margin-bottom: 2.5rem; }
+
+    /* SKILLS */
+    .skills-grid { display: grid; gap: 0.9rem; }
+    .skill-row { display: grid; grid-template-columns: 100px 1fr; gap: 1.2rem; align-items: start; }
+    .skill-cat { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; color: #2d4a6e; letter-spacing: 0.08em; text-transform: uppercase; padding-top: 0.28rem; line-height: 1.5; }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 0.3rem; }
+    .pill {
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.7rem;
+      padding: 0.22rem 0.6rem; border: 1px solid #131d2e; color: #3d566e;
+      background: #0a0f1a; cursor: default; transition: all 0.18s ease;
+    }
+    .pill:hover { background: #38bdf812; border-color: #38bdf855; color: #38bdf8; }
+
+    /* CARDS */
+    .card {
+      background: #090e18; border: 1px solid #0f1c2e; padding: 2rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .card:hover { border-color: #38bdf820; box-shadow: 0 6px 28px #00000030; }
+    .cards-grid { display: grid; gap: 1.2rem; }
+
+    /* RESEARCH */
+    .research-header { display: flex; justify-content: space-between; align-items: flex-start; gap: 1rem; margin-bottom: 1.4rem; flex-wrap: wrap; }
+    .research-title { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.05rem; color: #e2e8f0; line-height: 1.4; max-width: 580px; }
+    .status-badge { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.25rem 0.65rem; white-space: nowrap; flex-shrink: 0; }
+    .bullet-list { list-style: none; display: grid; gap: 0.5rem; }
+    .bullet-list li { display: flex; gap: 0.8rem; font-size: 0.875rem; line-height: 1.75; color: #4a617a; }
+    .bullet-list li::before { content: '◆'; color: #38bdf8; flex-shrink: 0; font-size: 0.5rem; margin-top: 0.6rem; }
+
+    /* PROJECTS */
+    .project-header { display: flex; justify-content: space-between; align-items: flex-start; flex-wrap: wrap; gap: 0.75rem; margin-bottom: 0.75rem; }
+    .project-title-row { display: flex; align-items: center; gap: 0.9rem; flex-wrap: wrap; }
+    .project-title { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1.05rem; color: #e2e8f0; }
+    .project-link { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: #38bdf8; text-decoration: none; letter-spacing: 0.06em; }
+    .project-link:hover { text-decoration: underline; }
+    .hackathon-badge { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; letter-spacing: 0.08em; color: #f59e0b; padding: 0.22rem 0.65rem; background: #f59e0b0c; border: 1px solid #f59e0b28; white-space: nowrap; }
+    .tags { display: flex; flex-wrap: wrap; gap: 0.3rem; margin-bottom: 1.2rem; }
+    .tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.62rem; padding: 0.18rem 0.5rem; background: #38bdf808; border: 1px solid #38bdf818; color: #38bdf860; }
+
+    /* CERTIFICATIONS */
+    .cert-grid { display: grid; gap: 0.85rem; }
+    .oracle-card { background: #090e18; border: 1px solid #0f1c2e; padding: 1.75rem 2rem; display: flex; justify-content: space-between; align-items: center; gap: 2rem; flex-wrap: wrap; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    .oracle-card:hover { border-color: #38bdf820; box-shadow: 0 6px 28px #00000030; }
+    .oracle-meta { display: flex; align-items: center; gap: 0.6rem; margin-bottom: 0.5rem; flex-wrap: wrap; }
+    .oracle-issuer-tag { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 0.12em; text-transform: uppercase; padding: 0.18rem 0.5rem; border: 1px solid #f8000040; background: #f8000010; color: #f80000; }
+    .oracle-verified { font-family: 'IBM Plex Mono', monospace; font-size: 0.58rem; letter-spacing: 0.1em; color: #22c55e; }
+    .oracle-title { font-family: 'IBM Plex Sans', sans-serif; font-weight: 600; font-size: 0.95rem; color: #c8d8e8; line-height: 1.35; }
+    .oracle-badge-img { width: 90px; height: 90px; flex-shrink: 0; border: 1px solid #38bdf820; background: #090e18; display: flex; align-items: center; justify-content: center; }
+    .oracle-badge-img img { width: 100%; height: 100%; object-fit: contain; padding: 6px; }
+    .plain-cert { background: #090e18; border: 1px solid #0f1c2e; padding: 1.1rem 2rem; display: flex; align-items: center; gap: 1.5rem; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    .plain-cert:hover { border-color: #38bdf820; box-shadow: 0 6px 28px #00000030; }
+    .cert-accent { width: 3px; height: 32px; flex-shrink: 0; opacity: 0.6; }
+    .cert-issuer { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: #2d4a6e; letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 0.25rem; }
+    .cert-name { font-family: 'IBM Plex Sans', sans-serif; font-weight: 500; font-size: 0.88rem; color: #7a9ab8; line-height: 1.3; }
+
+    /* ACHIEVEMENTS */
+    .achievement-card { background: #090e18; border: 1px solid #0f1c2e; padding: 1.75rem 2rem; display: flex; gap: 2rem; align-items: center; transition: border-color 0.2s ease, box-shadow 0.2s ease; }
+    .achievement-card:hover { border-color: #38bdf820; box-shadow: 0 6px 28px #00000030; }
+    .achievement-rank { font-family: 'Fraunces', serif; font-weight: 900; font-size: 2rem; line-height: 1; flex-shrink: 0; min-width: 50px; text-align: center; }
+    .achievement-divider { width: 1px; height: 40px; flex-shrink: 0; }
+    .achievement-desc { font-size: 0.88rem; line-height: 1.8; color: #4a617a; font-weight: 300; }
+
+    /* CONTACT */
+    #contact { padding-bottom: 6rem; }
+    .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 1.2rem; }
+    @media (max-width: 580px) { .contact-grid { grid-template-columns: 1fr; } }
+    .contact-card {
+      background: #090e18; border: 1px solid #0f1c2e; padding: 1.75rem 2rem;
+      text-decoration: none; display: flex; flex-direction: column; gap: 0.4rem;
+      transition: border-color 0.2s ease, box-shadow 0.2s ease;
+    }
+    .contact-card:hover { border-color: #38bdf840; box-shadow: 0 6px 28px #00000030; }
+    .contact-label { font-family: 'IBM Plex Mono', monospace; font-size: 0.6rem; color: #2d4a6e; letter-spacing: 0.12em; text-transform: uppercase; }
+    .contact-value { font-family: 'IBM Plex Sans', sans-serif; font-size: 0.9rem; color: #7a9ab8; font-weight: 400; }
+    .contact-card:hover .contact-value { color: #38bdf8; }
+    .contact-arrow { font-size: 0.9rem; color: #2d4a6e; margin-top: auto; padding-top: 0.75rem; transition: color 0.15s ease; }
+    .contact-card:hover .contact-arrow { color: #38bdf8; }
+    .mailto-full {
+      background: #090e18; border: 1px solid #0f1c2e; padding: 2rem;
+      grid-column: 1 / -1;
+      display: flex; flex-direction: column; gap: 1rem;
+      transition: border-color 0.2s ease;
+    }
+    .mailto-full:hover { border-color: #38bdf820; }
+    .mailto-title { font-family: 'Fraunces', serif; font-weight: 700; font-size: 1rem; color: #e2e8f0; margin-bottom: 0.25rem; }
+    .mailto-desc { font-size: 0.85rem; color: #4a617a; line-height: 1.7; font-weight: 300; max-width: 480px; }
+    .mailto-link {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      font-family: 'IBM Plex Mono', monospace; font-size: 0.75rem;
+      letter-spacing: 0.1em; text-transform: uppercase;
+      padding: 0.72rem 1.6rem; text-decoration: none;
+      background: #38bdf8; color: #06090f; align-self: flex-start;
+      transition: opacity 0.15s ease;
+    }
+    .mailto-link:hover { opacity: 0.85; }
+
+    /* FOOTER */
+    footer { border-top: 1px solid #0d1726; }
+    .footer-inner { max-width: 860px; margin: 0 auto; padding: 1.8rem clamp(1.5rem, 5vw, 2.5rem); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem; }
+    .footer-copy { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: #1e293b; letter-spacing: 0.08em; }
+    .footer-links { display: flex; gap: 1.5rem; }
+    .footer-links a { font-family: 'IBM Plex Mono', monospace; font-size: 0.65rem; color: #2d4a6e; text-decoration: none; letter-spacing: 0.06em; transition: color 0.15s ease; }
+    .footer-links a:hover { color: #38bdf8; }
+
+    /* FADE IN */
+    .fade-in { opacity: 0; transform: translateY(20px); transition: opacity 0.55s cubic-bezier(.4,0,.2,1), transform 0.55s cubic-bezier(.4,0,.2,1); }
+    .fade-in.visible { opacity: 1; transform: translateY(0); }
+
+    @keyframes rise { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+
+    @media (max-width: 600px) {
+      .skill-row { grid-template-columns: 80px 1fr; }
+      .contact-grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="nav">
+    <span class="nav-logo">RV</span>
+    <div class="nav-links">
+      <a href="#about" class="active">About</a>
+      <a href="#research">Research</a>
+      <a href="#projects">Projects</a>
+      <a href="#certifications">Certifications</a>
+      <a href="#achievements">Achievements</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </nav>
+
+  <div class="container">
+
+    <!-- HERO -->
+    <section id="about">
+      <p class="hero-tag">AI · Deep Learning · Computer Vision</p>
+      <h1 class="hero-name">Rakshit<br>Verma</h1>
+      <p class="hero-bio">
+        B.Tech CSE at <strong>IIIT Dharwad</strong>.<br>
+        Specialising in computer vision, state-space models, and biosignal processing.
+        Two research papers currently under review.
+      </p>
+      <div class="hero-btns">
+        <a href="#contact" class="btn-primary">Get in Touch</a>
+        <a href="https://github.com/rakshverma" target="_blank" rel="noreferrer" class="btn-secondary">GitHub ↗</a>
+        <a href="https://linkedin.com/in/rakshit-verma-472654313" target="_blank" rel="noreferrer" class="btn-secondary">LinkedIn ↗</a>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- SKILLS -->
+    <section class="section" id="skills">
+      <div class="fade-in">
+        <p class="section-tag">/technical-skills</p>
+        <h2 class="section-title">Technical Skills</h2>
+      </div>
+      <div class="skills-grid">
+        <div class="skill-row fade-in" style="transition-delay:45ms">
+          <p class="skill-cat">Languages</p>
+          <div class="skill-pills">
+            <span class="pill">Python</span><span class="pill">Java</span><span class="pill">C</span>
+          </div>
+        </div>
+        <div class="skill-row fade-in" style="transition-delay:90ms">
+          <p class="skill-cat">Deep Learning</p>
+          <div class="skill-pills">
+            <span class="pill">PyTorch</span><span class="pill">TensorFlow</span><span class="pill">HuggingFace Transformers</span>
+          </div>
+        </div>
+        <div class="skill-row fade-in" style="transition-delay:135ms">
+          <p class="skill-cat">Computer Vision</p>
+          <div class="skill-pills">
+            <span class="pill">OpenCV</span><span class="pill">YOLO</span><span class="pill">Object Detection</span><span class="pill">Semantic Segmentation</span><span class="pill">Hyperspectral Imaging</span>
+          </div>
+        </div>
+        <div class="skill-row fade-in" style="transition-delay:180ms">
+          <p class="skill-cat">Architectures</p>
+          <div class="skill-pills">
+            <span class="pill">State Space Models (Mamba)</span><span class="pill">Transformers</span><span class="pill">Encoder-Decoder CNNs</span>
+          </div>
+        </div>
+        <div class="skill-row fade-in" style="transition-delay:225ms">
+          <p class="skill-cat">ML Utilities</p>
+          <div class="skill-pills">
+            <span class="pill">NumPy</span><span class="pill">Pandas</span><span class="pill">Scikit-learn</span><span class="pill">Matplotlib</span><span class="pill">Seaborn</span>
+          </div>
+        </div>
+        <div class="skill-row fade-in" style="transition-delay:270ms">
+          <p class="skill-cat">Backend</p>
+          <div class="skill-pills">
+            <span class="pill">Django</span><span class="pill">FastAPI</span><span class="pill">REST APIs</span><span class="pill">SQLite</span><span class="pill">Docker</span>
+          </div>
+        </div>
+        <div class="skill-row fade-in" style="transition-delay:315ms">
+          <p class="skill-cat">Tooling</p>
+          <div class="skill-pills">
+            <span class="pill">Git</span><span class="pill">GitHub Actions</span><span class="pill">Jupyter</span><span class="pill">Linux</span><span class="pill">Google Colab</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- RESEARCH -->
+    <section class="section" id="research">
+      <div class="fade-in">
+        <p class="section-tag">/research</p>
+        <h2 class="section-title">Research</h2>
+      </div>
+      <div class="cards-grid">
+
+        <div class="card fade-in" style="transition-delay:80ms">
+          <div class="research-header">
+            <h3 class="research-title">Hyperspectral Image Generation using Spectral-Spatial State-Space Modeling</h3>
+            <span class="status-badge" style="background:#f59e0b14;color:#f59e0b;border:1px solid #f59e0b30;">Under Review</span>
+          </div>
+          <ul class="bullet-list">
+            <li>Designed generative architecture for hyperspectral reconstruction using spectral-spatial fusion.</li>
+            <li>Integrated state-space modeling to capture long-range spectral dependencies.</li>
+            <li>Built end-to-end PyTorch training pipeline for multi-band tensor processing.</li>
+            <li>Achieved state-of-the-art results on the CAVE benchmark dataset (PSNR, SSIM).</li>
+          </ul>
+        </div>
+
+        <div class="card fade-in" style="transition-delay:160ms">
+          <div class="research-header">
+            <h3 class="research-title">EMG Signal Classification for Prosthetic Control using Mamba</h3>
+            <span class="status-badge" style="background:#6366f114;color:#6366f1;border:1px solid #6366f130;">Publication in Progress</span>
+          </div>
+          <ul class="bullet-list">
+            <li>Implemented Mamba-based state-space architecture for long-range temporal modeling of EMG signals.</li>
+            <li>Developed preprocessing pipeline for multi-channel biosignal normalization.</li>
+            <li>Achieved improved classification performance over LSTM and GRU baselines.</li>
+            <li>Application: real-time prosthetic limb control.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- PROJECTS -->
+    <section class="section" id="projects">
+      <div class="fade-in">
+        <p class="section-tag">/projects</p>
+        <h2 class="section-title">Projects</h2>
+      </div>
+      <div class="cards-grid">
+
+        <div class="card fade-in" style="transition-delay:80ms">
+          <div class="project-header">
+            <div class="project-title-row">
+              <h3 class="project-title">Constellation Detection System</h3>
+              <a href="https://constellationpredict-production.up.railway.app/" target="_blank" rel="noreferrer" class="project-link">Live ↗</a>
+            </div>
+            <span class="hackathon-badge">Hackathon · Round 3</span>
+          </div>
+          <div class="tags">
+            <span class="tag">YOLO</span><span class="tag">Django</span><span class="tag">GPS</span><span class="tag">AI Chatbot</span>
+          </div>
+          <ul class="bullet-list">
+            <li>Trained 16-class object detector — mAP@50 95.8%, Precision 90.5%, Recall 95.6%.</li>
+            <li>Integrated real-time inference into Django backend with GPS-based sky recommendations.</li>
+            <li>Developed multilingual AI chatbot with voice input/output.</li>
+          </ul>
+        </div>
+
+        <div class="card fade-in" style="transition-delay:160ms">
+          <div class="project-header">
+            <div class="project-title-row">
+              <h3 class="project-title">Multimodal Representation Learning with CLIP</h3>
+            </div>
+            <span class="hackathon-badge">Amazon ML Challenge · Top 300</span>
+          </div>
+          <div class="tags">
+            <span class="tag">CLIP</span><span class="tag">PyTorch</span><span class="tag">Embeddings</span>
+          </div>
+          <ul class="bullet-list">
+            <li>Leveraged pretrained CLIP encoders for embedding-based multimodal modeling.</li>
+            <li>Built scalable PyTorch inference pipeline for large-scale feature extraction.</li>
+          </ul>
+        </div>
+
+        <div class="card fade-in" style="transition-delay:240ms">
+          <div class="project-header">
+            <div class="project-title-row">
+              <h3 class="project-title">Semantic Segmentation using U-Net</h3>
+            </div>
+          </div>
+          <div class="tags">
+            <span class="tag">TensorFlow</span><span class="tag">U-Net</span><span class="tag">Segmentation</span>
+          </div>
+          <ul class="bullet-list">
+            <li>Implemented encoder-decoder U-Net (8.6M parameters) for multi-class segmentation.</li>
+            <li>Built tf.data preprocessing pipeline; trained using Sparse Categorical Crossentropy.</li>
+          </ul>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- CERTIFICATIONS -->
+    <section class="section" id="certifications">
+      <div class="fade-in">
+        <p class="section-tag">/certifications</p>
+        <h2 class="section-title">Certifications</h2>
+      </div>
+      <div class="cert-grid">
+
+        <!-- Oracle — with badge -->
+        <div class="oracle-card fade-in" style="transition-delay:55ms">
+          <div style="flex:1;min-width:200px">
+            <div class="oracle-meta">
+              <span class="oracle-issuer-tag">Oracle</span>
+              <span class="oracle-verified">✓ Certified Professional</span>
+            </div>
+            <h3 class="oracle-title">Oracle Certified Professional — Generative AI</h3>
+          </div>
+          <div class="oracle-badge-img">
+            <img src="oracle.jpeg" alt="Oracle Certified Professional Badge" />
+          </div>
+        </div>
+
+        <!-- DeepLearning.AI certs -->
+        <div class="plain-cert fade-in" style="transition-delay:110ms">
+          <div class="cert-accent" style="background:#0056d2"></div>
+          <div>
+            <p class="cert-issuer">DeepLearning.AI</p>
+            <h3 class="cert-name">Convolutional Neural Networks</h3>
+          </div>
+        </div>
+
+        <div class="plain-cert fade-in" style="transition-delay:165ms">
+          <div class="cert-accent" style="background:#0056d2"></div>
+          <div>
+            <p class="cert-issuer">DeepLearning.AI</p>
+            <h3 class="cert-name">Neural Networks and Deep Learning</h3>
+          </div>
+        </div>
+
+        <!-- UMich -->
+        <div class="plain-cert fade-in" style="transition-delay:220ms">
+          <div class="cert-accent" style="background:#00274c"></div>
+          <div>
+            <p class="cert-issuer">University of Michigan</p>
+            <h3 class="cert-name">Building Web Applications in Django</h3>
+          </div>
+        </div>
+
+        <!-- NIELIT -->
+        <div class="plain-cert fade-in" style="transition-delay:275ms">
+          <div class="cert-accent" style="background:#1a6b3c"></div>
+          <div>
+            <p class="cert-issuer">NIELIT</p>
+            <h3 class="cert-name">Data Analysis with Python</h3>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- ACHIEVEMENTS -->
+    <section class="section" id="achievements">
+      <div class="fade-in">
+        <p class="section-tag">/achievements</p>
+        <h2 class="section-title">Achievements</h2>
+      </div>
+      <div class="cards-grid">
+
+        <div class="achievement-card fade-in" style="transition-delay:80ms">
+          <div class="achievement-rank" style="color:#f59e0b;text-shadow:0 0 20px #f59e0b40">1st</div>
+          <div class="achievement-divider" style="background:#f59e0b20"></div>
+          <p class="achievement-desc">Developed a real-time edge detection model deployed on Raspberry Pi, trained on MNIST — demonstrated live embedded inference at the competition.</p>
+        </div>
+
+        <div class="achievement-card fade-in" style="transition-delay:160ms">
+          <div class="achievement-rank" style="color:#64748b">2nd</div>
+          <div class="achievement-divider" style="background:#131d2e"></div>
+          <p class="achievement-desc">Built a neural network from scratch in C with no ML frameworks — implementing forward pass, backpropagation, and gradient descent at the systems level.</p>
+        </div>
+
+      </div>
+    </section>
+
+    <div class="divider"></div>
+
+    <!-- CONTACT -->
+    <section id="contact" style="padding-bottom:6rem">
+      <div class="fade-in">
+        <p class="section-tag">/contact</p>
+        <h2 class="section-title">Get in Touch</h2>
+      </div>
+
+      <div class="contact-grid fade-in" style="transition-delay:80ms">
+
+        <!-- Prefilled mailto card -->
+        <div class="mailto-full">
+          <div>
+            <h3 class="mailto-title">Send me an email</h3>
+            <p class="mailto-desc">
+              Open your mail client with a pre-filled message — just fill in your details and hit send.
+            </p>
+          </div>
+          <a
+            class="mailto-link"
+            href="mailto:vermarakshit609@gmail.com?subject=Opportunity%20%2F%20Collaboration&body=Hi%20Rakshit%2C%0A%0AI%20came%20across%20your%20portfolio%20and%20wanted%20to%20reach%20out%20regarding%20%5Byour%20reason%5D.%0A%0ABest%2C%0A%5BYour%20Name%5D"
+          >
+            ✉ Open Email Draft ↗
+          </a>
+        </div>
+
+        <!-- GitHub -->
+        <a href="https://github.com/rakshverma" target="_blank" rel="noreferrer" class="contact-card">
+          <span class="contact-label">GitHub</span>
+          <span class="contact-value">github.com/rakshverma</span>
+          <span class="contact-arrow">↗</span>
+        </a>
+
+        <!-- LinkedIn -->
+        <a href="https://linkedin.com/in/rakshit-verma-472654313" target="_blank" rel="noreferrer" class="contact-card">
+          <span class="contact-label">LinkedIn</span>
+          <span class="contact-value">linkedin.com/in/rakshit-verma-472654313</span>
+          <span class="contact-arrow">↗</span>
+        </a>
+
+      </div>
+    </section>
+
+  </div><!-- /container -->
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="footer-inner">
+      <span class="footer-copy">© 2025 Rakshit Verma</span>
+      <div class="footer-links">
+        <a href="mailto:vermarakshit609@gmail.com">Email</a>
+        <a href="https://github.com/rakshverma" target="_blank" rel="noreferrer">GitHub</a>
+        <a href="https://linkedin.com/in/rakshit-verma-472654313" target="_blank" rel="noreferrer">LinkedIn</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Nav scroll effect + active link
+    const nav = document.getElementById('nav');
+    const navLinks = document.querySelectorAll('.nav-links a');
+    const sections = document.querySelectorAll('section[id]');
+
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 50);
+
+      let current = '';
+      sections.forEach(s => {
+        if (window.scrollY >= s.offsetTop - 130) current = s.id;
+      });
+      navLinks.forEach(a => {
+        a.classList.toggle('active', a.getAttribute('href') === '#' + current);
+      });
+    });
+
+    // Intersection observer for fade-in
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) {
+          e.target.classList.add('visible');
+          observer.unobserve(e.target);
+        }
+      });
+    }, { threshold: 0.1 });
+
+    document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
