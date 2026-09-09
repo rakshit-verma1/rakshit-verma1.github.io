@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64" role="img" aria-labelledby="title">
+  <title id="title">RV monogram</title>
+  <rect width="64" height="64" rx="15" fill="#080A0D"/>
+  <path d="M10 12 32 7l22 5M10 52l22 5 22-5" fill="none" stroke="#26313B" stroke-width="1.5"/>
+  <circle cx="10" cy="12" r="2.5" fill="#61E6FF"/>
+  <circle cx="32" cy="7" r="2.5" fill="#B8FF2C"/>
+  <circle cx="54" cy="12" r="2.5" fill="#61E6FF"/>
+  <circle cx="10" cy="52" r="2.5" fill="#61E6FF"/>
+  <circle cx="32" cy="57" r="2.5" fill="#B8FF2C"/>
+  <circle cx="54" cy="52" r="2.5" fill="#61E6FF"/>
+  <path d="M15 47V18h10.5c8 0 10.5 11.5 2.5 14H15m11.5 0L36 47" fill="none" stroke="#B8FF2C" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M35 18 44.5 47 54 18" fill="none" stroke="#61E6FF" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/>
+</svg>
